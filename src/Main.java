@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class Main {
 
-    private static final String PROPERTY_FILE = "resources/app.properties";
+    private static final String PROPERTY_FILE = "config/app.properties";
 
     public static void main(String[] args) {
         System.out.println("Main function");

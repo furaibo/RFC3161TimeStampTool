@@ -13,7 +13,7 @@ import java.util.Properties;
 
 public class PDFServiceTest {
 
-    private static final String TEST_PROPERTY_FILE = "resources/test.properties";
+    private static final String TEST_PROPERTY_FILE = "config/test.properties";
 
     @Test
     @Description("Merge PDF Files")
