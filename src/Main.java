@@ -1,3 +1,5 @@
+import cli.TimeStampCLI;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,7 +11,12 @@ public class Main {
     private static final String PROPERTY_FILE = "config/app.properties";
 
     public static void main(String[] args) {
-        System.out.println("Main function");
+        // get properties
+        Properties prop = getProperties();
+
+        // exec command line
+        var cli = new TimeStampCLI();
+        cli.execParsedCommandLine(args, prop);
     }
 
     public static Properties getProperties() {
