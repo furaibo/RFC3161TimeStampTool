@@ -85,10 +85,13 @@ public class PDFService {
         // ディレクトリの作成
         Files.createDirectories(this.outputFileFolderPath);
 
+        // 入力ファイル名の取得
+        String baseFileName = baseFilePath.getFileName().toString();
+
         // 出力先ファイルパス
         String outputFilePathStr = String.format(
-                "%s/%s.pdf",
-                this.outputFileFolderPath, dtFormat.format(LocalDateTime.now())
+                "%s/%s",
+                this.outputFileFolderPath, baseFileName
             );
         Path outputFilePath = Paths.get(outputFilePathStr);
 
