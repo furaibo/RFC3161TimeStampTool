@@ -113,7 +113,7 @@ public class TimeStampService {
 
         // 出力先ファイルパス
         String outputFilePathStr = String.format(
-                "%s/%s.pdf",
+                "%s/%s",
                 this.outputFileFolderPath, inputFileName
             );
         Path outputFilePath = Paths.get(outputFilePathStr);
@@ -193,26 +193,35 @@ public class TimeStampService {
 
             // タイムスタンプ情報の取得
             TimeStampToken token = this.extractTimestampTokenFromPDF(path);
-            TimeStampTokenInfo tsInfo = token.getTimeStampInfo();
+            if (token != null) {
+                TimeStampTokenInfo tsInfo = token.getTimeStampInfo();
 
-            // タイムスタンプトークンからのX.509証明書の取得
-            X509CertificateHolder cert = this.getCertFromTimeStampToken(token);
+                // タイムスタンプトークンからのX.509証明書の取得
+                X509CertificateHolder cert = this.getCertFromTimeStampToken(token);
 
-            // 検証結果の取得
-            boolean hasValidDigest = this.checkTimestampHashDigestValidity(path);
-            boolean hasValidCert = this.checkTimestampCertValidity(path);
-            String timestampStatusStr = (hasValidDigest && hasValidCert) ? "有効": "無効";
+                // 検証結果の取得
+                boolean hasValidDigest = this.checkTimestampHashDigestValidity(path);
+                boolean hasValidCert = this.checkTimestampCertValidity(path);
+                String timestampStatusStr = (hasValidDigest && hasValidCert) ? "有効": "無効";
 
-            // CSVファイルへの書き込み
-            csvPrinter.printRecord(
-                inputFileName,               // ファイル名
-                timestampStatusStr,          // 検証結果
-                tsInfo.getSerialNumber(),    // シリアル番号
-                tsInfo.getGenTime(),         // 生成時刻
-                tsInfo.getTsa().getName(),   // TSA情報
-                cert.getNotAfter(),          // 有効期限
-                cert.getIssuer()             // 証明書発行者
-            );
+                // CSVファイルへの書き込み
+                csvPrinter.printRecord(
+                        inputFileName,               // ファイル名
+                        timestampStatusStr,          // 検証結果
+                        tsInfo.getSerialNumber(),    // シリアル番号
+                        tsInfo.getGenTime(),         // 生成時刻
+                        tsInfo.getTsa().getName(),   // TSA情報
+                        cert.getNotAfter(),          // 有効期限
+                        cert.getIssuer()             // 証明書発行者
+                    );
+            } else {
+                csvPrinter.printRecord(
+                        inputFileName,  // ファイル名
+                        "タイムスタンプなし",     // 検証結果
+                        "", "", "", "", ""
+                    );
+            }
+
         }
 
         // CSVPrinterの終了時処理
@@ -353,6 +362,8 @@ public class TimeStampService {
 
         // 最新の署名情報の取得
         PDSignature signature = signedDoc.getLastSignatureDictionary();
+        if (signature == null) { return null; }
+
         byte[] contents = signature.getContents();
         CMSSignedData signedData = new CMSSignedData(contents);
 
