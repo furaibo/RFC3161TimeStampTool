@@ -24,7 +24,7 @@ public class TimeStampServiceTest {
 
             // タイムスタンプ情報の表示
             TimeStampService tss = new TimeStampService(prop);
-            byte[] inputBytes = DigestUtils.sha256("Hello, World!".getBytes());
+            byte[] inputBytes = "Hello, World!".getBytes();
             tss.testTimeStampResponse(inputBytes);
 
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class TimeStampServiceTest {
             Properties prop = getProperties();
 
             // 入力ファイルパスの取得
-            Path inputFilePath = Paths.get(prop.getProperty("TestInputFilePath1"));
+            Path inputFilePath = Paths.get(prop.getProperty("test.input.file1"));
 
             // タイムスタンプの取得処理(単一ファイル)
             TimeStampService tss = new TimeStampService(prop);
@@ -59,9 +59,9 @@ public class TimeStampServiceTest {
             Properties prop = getProperties();
 
             // 入力ファイルパスの取得
-            Path inputFilePath1 = Paths.get(prop.getProperty("TestInputFilePath1"));
-            Path inputFilePath2 = Paths.get(prop.getProperty("TestInputFilePath2"));
-            Path inputFilePath3 = Paths.get(prop.getProperty("TestInputFilePath3"));
+            Path inputFilePath1 = Paths.get(prop.getProperty("test.input.file1"));
+            Path inputFilePath2 = Paths.get(prop.getProperty("test.input.file2"));
+            Path inputFilePath3 = Paths.get(prop.getProperty("test.input.file3"));
             List<Path> inputFilePathList = List.of(inputFilePath1, inputFilePath2, inputFilePath3);
 
             // タイムスタンプの取得処理(複数ファイル)
@@ -81,9 +81,9 @@ public class TimeStampServiceTest {
             Properties prop = getProperties();
 
             // 入力ファイルパスの取得
-            Path inputFilePath1 = Paths.get(prop.getProperty("TestInputFileSignedPath1"));
-            Path inputFilePath2 = Paths.get(prop.getProperty("TestInputFileSignedPath2"));
-            Path inputFilePath3 = Paths.get(prop.getProperty("TestInputFileSignedPath3"));
+            Path inputFilePath1 = Paths.get(prop.getProperty("test.input.signed.file1"));
+            Path inputFilePath2 = Paths.get(prop.getProperty("test.input.signed.file2"));
+            Path inputFilePath3 = Paths.get(prop.getProperty("test.input.signed.file3"));
             List<Path> inputFilePathList = List.of(inputFilePath1, inputFilePath2, inputFilePath3);
 
             // タイムスタンプの検証処理

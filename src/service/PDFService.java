@@ -30,7 +30,7 @@ public class PDFService {
     public PDFService(Properties property) {
         try {
             // 出力先フォルダパスの取得
-            Path outputFileRootPath = Paths.get(property.getProperty("AppOutputFileFolderPath"));
+            Path outputFileRootPath = Paths.get(property.getProperty("app.output.folder.file"));
             this.outputFileFolderPath = outputFileRootPath.resolve(dtFormat.format(LocalDateTime.now()));
 
         } catch (Exception e) {

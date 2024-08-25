@@ -51,13 +51,13 @@ public class TimeStampService {
         try {
             // Propertiesから設定値を取り出す
             // タイムスタンプ局情報の取得
-            this.tsaServiceURL = property.getProperty("TSAServiceURL");
-            this.tsaUserAccount = property.getProperty("TSAUserAccount");
-            this.tsaUserPassword = property.getProperty("TSAUserPassword");
+            this.tsaServiceURL = property.getProperty("tsa.service.url");
+            this.tsaUserAccount = property.getProperty("tsa.service.user.account");
+            this.tsaUserPassword = property.getProperty("tsa.service.user.password");
 
             // 出力先フォルダパスの取得
-            Path outputFileRootPath = Paths.get(property.getProperty("AppOutputFileFolderPath"));
-            Path outputLogRootPath = Paths.get(property.getProperty("AppOutputLogFolderPath"));
+            Path outputFileRootPath = Paths.get(property.getProperty("app.output.folder.file"));
+            Path outputLogRootPath = Paths.get(property.getProperty("app.output.folder.log"));
             this.outputFileFolderPath = outputFileRootPath.resolve(dtFormat.format(LocalDateTime.now()));
             this.outputLogFolderPath = outputLogRootPath.resolve(dtFormat.format(LocalDateTime.now()));
 
@@ -79,7 +79,8 @@ public class TimeStampService {
             throws IOException, InterruptedException, TSPException {
 
         // タイムスタンプトークンの取得
-        TimeStampToken token = this.getTimeStampTokenFromTSA(inputBytes);
+        byte[] sha256Bytes = DigestUtils.sha256(inputBytes);
+        TimeStampToken token = this.getTimeStampTokenFromTSA(sha256Bytes);
         TimeStampTokenInfo tsInfo = token.getTimeStampInfo();
 
         // X.509証明書の取得
